@@ -1,0 +1,5 @@
+catanatron
+catanatron-gym
+gymnasium
+torch
+numpy
