@@ -82,5 +82,5 @@ def evaluate(num_episodes=10, model_path=None, num_players=2):
 
 if __name__ == "__main__":
     # You can point to a specific checkpoint here
-    evaluate(model_path="checkpoints/ppo_catan_1000.pth", num_players=4)
+    evaluate(model_path="checkpoints/ppo_catan_2000.pth", num_players=4)
     # evaluate(num_players=2)

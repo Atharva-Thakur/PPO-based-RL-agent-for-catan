@@ -3,3 +3,6 @@ catanatron-gym
 gymnasium
 torch
 numpy
+flask
+flask-socketio
+flask-cors

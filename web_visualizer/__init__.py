@@ -1,0 +1,3 @@
+"""
+Web visualizer package initialization
+"""
