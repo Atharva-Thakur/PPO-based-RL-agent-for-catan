@@ -136,10 +136,10 @@ def start_server_and_visualize(num_episodes=10, model_path=None, num_players=4, 
 
 if __name__ == "__main__":
     # Configuration
-    MODEL_PATH = "checkpoints/ppo_catan_2000.pth"  # Change to your model
-    NUM_EPISODES = 1
+    MODEL_PATH = "checkpoints/ppo_catan_500.pth"  # Change to your model
+    NUM_EPISODES = 5
     NUM_PLAYERS = 4
-    DELAY = 0.3  # Seconds between steps (lower = faster, 0 = no delay)
+    DELAY = 0.1  # Seconds between steps (lower = faster, 0 = no delay)
     
     start_server_and_visualize(
         num_episodes=NUM_EPISODES,

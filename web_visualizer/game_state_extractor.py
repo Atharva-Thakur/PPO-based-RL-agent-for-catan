@@ -257,6 +257,18 @@ def extract_game_state(game, episode=0, step=0, action_taken=None):
         # Build node position mapping first
         node_positions = build_node_position_map(game)
         
+        # Extract last dice roll from actions
+        last_dice_roll = None
+        if len(game.state.actions) > 0:
+            last_action = game.state.actions[-1]
+            action_str = str(last_action)
+            if 'ROLL' in action_str:
+                # Extract dice values from action string like "Action(BLUE ROLL (3, 4))"
+                import re
+                match = re.search(r'ROLL \((\d+), (\d+)\)', action_str)
+                if match:
+                    last_dice_roll = [int(match.group(1)), int(match.group(2))]
+        
         state = {
             'episode': episode,
             'step': step,
@@ -267,6 +279,7 @@ def extract_game_state(game, episode=0, step=0, action_taken=None):
             'players': extract_players(game),
             'ports': extract_ports(game, node_positions),
             'action': action_taken,
+            'dice_roll': last_dice_roll,
             'game_over': game.winning_color() is not None,
             'winner': game.winning_color().name if game.winning_color() else None
         }

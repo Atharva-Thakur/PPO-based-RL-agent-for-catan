@@ -49,7 +49,7 @@ socket.on('game_state', (state) => {
 
 socket.on('game_end', (result) => {
     console.log('Game ended:', result);
-    showWinnerBanner(result.winner);
+    // Winner banner removed - game continues to next episode
 });
 
 function updateConnectionStatus(connected) {
@@ -74,6 +74,18 @@ function updateUI() {
     document.getElementById('episode').textContent = gameState.episode || 0;
     document.getElementById('step').textContent = gameState.step || 0;
     document.getElementById('current-player').textContent = gameState.current_player || '-';
+    
+    // Update dice roll
+    const diceElement = document.getElementById('dice-roll');
+    if (gameState.dice_roll && gameState.dice_roll.length === 2) {
+        const [die1, die2] = gameState.dice_roll;
+        const total = die1 + die2;
+        diceElement.textContent = `🎲 ${die1} + ${die2} = ${total}`;
+        diceElement.style.color = (total === 7) ? '#d32f2f' : '#333';
+    } else {
+        diceElement.textContent = '🎲 - -';
+        diceElement.style.color = '#666';
+    }
 
     // Update players
     updatePlayers();
@@ -83,9 +95,9 @@ function updateUI() {
         addActionLog(gameState.action);
     }
 
-    // Show winner if game is over
+    // Winner logged in console instead of banner
     if (gameState.game_over && gameState.winner) {
-        showWinnerBanner(gameState.winner);
+        console.log('Game Over! Winner:', gameState.winner);
     }
 }
 
