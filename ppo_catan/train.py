@@ -5,6 +5,8 @@ import numpy as np
 from .agent import PPOAgent
 import os
 from catanatron.models.player import RandomPlayer
+from catanatron.players.search import VictoryPointPlayer
+from catanatron.players.weighted_random import WeightedRandomPlayer
 from catanatron.game import Color
 
 def train():
@@ -12,7 +14,7 @@ def train():
     # Default is 1v1 (Agent vs Random Red). 
     # To play 4 players, uncomment the enemies list below.
     # enemies = [RandomPlayer(Color.RED)] 
-    enemies = [RandomPlayer(Color.RED), RandomPlayer(Color.ORANGE), RandomPlayer(Color.WHITE)]
+    enemies = [VictoryPointPlayer(Color.RED), WeightedRandomPlayer(Color.ORANGE), RandomPlayer(Color.WHITE)]
     
     config = {
         "enemies": enemies

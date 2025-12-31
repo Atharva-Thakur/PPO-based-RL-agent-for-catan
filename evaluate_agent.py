@@ -5,6 +5,8 @@ import numpy as np
 from ppo_catan.agent import PPOAgent
 import os
 from catanatron.models.player import RandomPlayer
+from catanatron.players.search import VictoryPointPlayer
+from catanatron.players.weighted_random import WeightedRandomPlayer
 from catanatron.game import Color
 
 def evaluate(num_episodes=10, model_path=None, num_players=2):
@@ -14,7 +16,10 @@ def evaluate(num_episodes=10, model_path=None, num_players=2):
     elif num_players == 3:
         enemies = [RandomPlayer(Color.RED), RandomPlayer(Color.ORANGE)]
     elif num_players == 4:
-        enemies = [RandomPlayer(Color.RED), RandomPlayer(Color.ORANGE), RandomPlayer(Color.WHITE)]
+        # enemies = [VictoryPointPlayer(Color.RED), WeightedRandomPlayer(Color.ORANGE), RandomPlayer(Color.WHITE)]
+        # enemies = [RandomPlayer(Color.RED), RandomPlayer(Color.ORANGE), RandomPlayer(Color.WHITE)]
+        # enemies = [VictoryPointPlayer(Color.RED), VictoryPointPlayer(Color.ORANGE), VictoryPointPlayer(Color.WHITE)]
+        enemies = [WeightedRandomPlayer(Color.RED), WeightedRandomPlayer(Color.ORANGE), WeightedRandomPlayer(Color.WHITE)]
     else:
         raise ValueError("num_players must be 2, 3, or 4")
 
@@ -82,5 +87,5 @@ def evaluate(num_episodes=10, model_path=None, num_players=2):
 
 if __name__ == "__main__":
     # You can point to a specific checkpoint here
-    evaluate(model_path="checkpoints/ppo_catan_2000.pth", num_players=4)
+    evaluate(model_path="checkpoints/ppo_catan_10000.pth", num_players=4, num_episodes=100)
     # evaluate(num_players=2)

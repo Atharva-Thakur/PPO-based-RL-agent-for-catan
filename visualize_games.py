@@ -10,9 +10,13 @@ import os
 import time
 import threading
 from catanatron.models.player import RandomPlayer
+from catanatron.players.search import VictoryPointPlayer
+from catanatron.players.weighted_random import WeightedRandomPlayer
 from catanatron.game import Color
 from web_visualizer.server import socketio, broadcast_game_state, broadcast_game_end
 from web_visualizer.game_state_extractor import extract_game_state
+from catanatron_gym.envs.catanatron_env import ACTIONS_ARRAY
+from catanatron.models.enums import ActionType
 
 def visualize_games(num_episodes=10, model_path=None, num_players=4, delay=0.5):
     """
@@ -30,7 +34,10 @@ def visualize_games(num_episodes=10, model_path=None, num_players=4, delay=0.5):
     elif num_players == 3:
         enemies = [RandomPlayer(Color.RED), RandomPlayer(Color.ORANGE)]
     elif num_players == 4:
-        enemies = [RandomPlayer(Color.RED), RandomPlayer(Color.ORANGE), RandomPlayer(Color.WHITE)]
+        # enemies = [VictoryPointPlayer(Color.RED), WeightedRandomPlayer(Color.ORANGE), RandomPlayer(Color.WHITE)]
+        # enemies = [RandomPlayer(Color.RED), RandomPlayer(Color.ORANGE), RandomPlayer(Color.WHITE)]
+        enemies = [VictoryPointPlayer(Color.RED), VictoryPointPlayer(Color.ORANGE), VictoryPointPlayer(Color.WHITE)]
+        # enemies = [WeightedRandomPlayer(Color.RED), WeightedRandomPlayer(Color.ORANGE), WeightedRandomPlayer(Color.WHITE)]
     else:
         raise ValueError("num_players must be 2, 3, or 4")
 
@@ -77,10 +84,14 @@ def visualize_games(num_episodes=10, model_path=None, num_players=4, delay=0.5):
             action = agent.select_action(state, valid_actions)
             
             # Get action description
-            action_desc = f"Step {step}: Agent took action {action}"
+            action_type, action_value = ACTIONS_ARRAY[action]
+            action_name = f"{action_type.name}"
+            if action_value is not None:
+                action_name += f" {action_value}"
+            
+            action_desc = f"Step {step}: Agent took action {action} ({action_name})"
             
             state, reward, terminated, truncated, info = env.step(action)
-            done = terminated or truncated
             step += 1
             
             # Extract and broadcast game state
@@ -91,6 +102,7 @@ def visualize_games(num_episodes=10, model_path=None, num_players=4, delay=0.5):
             # Add delay for visualization
             if delay > 0:
                 time.sleep(delay)
+            done = terminated or truncated
             
         # Game over
         game = env.unwrapped.game
@@ -136,8 +148,8 @@ def start_server_and_visualize(num_episodes=10, model_path=None, num_players=4, 
 
 if __name__ == "__main__":
     # Configuration
-    MODEL_PATH = "checkpoints/ppo_catan_500.pth"  # Change to your model
-    NUM_EPISODES = 5
+    MODEL_PATH = "checkpoints/ppo_catan_10000.pth"  # Change to your model
+    NUM_EPISODES = 1
     NUM_PLAYERS = 4
     DELAY = 0.1  # Seconds between steps (lower = faster, 0 = no delay)
     
