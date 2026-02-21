@@ -2,6 +2,13 @@
 
 This project implements a Proximal Policy Optimization (PPO) agent to play the board game Settlers of Catan using the `catanatron` library and `catanatron_gym` environment.
 
+## Demo
+
+
+https://github.com/user-attachments/assets/e8c7f5fc-c6f3-4664-b31f-7972aa9bce0f
+
+
+
 ## Project Structure
 
 - `ppo_catan/`: Contains the source code for the agent and training loop.
